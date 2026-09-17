@@ -2,8 +2,54 @@
 
 [ext_resource type="Script" uid="uid://ids11emu0jxy" path="res://scenes/game_scene/game_scene.gd" id="1_72663"]
 [ext_resource type="PackedScene" uid="uid://72wgi4g5l8gj" path="res://scenes/user_interface/user_interface.tscn" id="1_pwder"]
+[ext_resource type="PackedScene" uid="uid://tswdmt0iq85a" path="res://scenes/player/player.tscn" id="3_o81xq"]
 
-[node name="game_scene" type="Node2D" unique_id=1383640292]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yil0t"]
+
+[sub_resource type="Sky" id="Sky_qhmab"]
+sky_material = SubResource("ProceduralSkyMaterial_yil0t")
+
+[sub_resource type="Environment" id="Environment_ass7y"]
+background_mode = 2
+sky = SubResource("Sky_qhmab")
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_ass7y"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qhmab"]
+uv1_triplanar = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_ass7y"]
+material = SubResource("StandardMaterial3D_qhmab")
+size = Vector2(40, 40)
+orientation = 1
+
+[node name="game_scene" type="Node3D" unique_id=447286778]
 script = ExtResource("1_72663")
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1722236301]
+transform = Transform3D(-0.41420603, 0.23199952, 0.8801191, 0.76054806, 0.619416, 0.19465476, -0.50000006, 0.75, -0.43301266, 0, 14.222504, 0)
+shadow_enabled = true
+
 [node name="user_interface" parent="." unique_id=1011023583 instance=ExtResource("1_pwder")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1006625060]
+environment = SubResource("Environment_ass7y")
+
+[node name="world_floor" type="StaticBody3D" parent="." unique_id=1414491973]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="world_floor" unique_id=1212395489]
+shape = SubResource("WorldBoundaryShape3D_ass7y")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="world_floor" unique_id=625079562]
+mesh = SubResource("QuadMesh_ass7y")
+
+[node name="player" parent="." unique_id=916352397 instance=ExtResource("3_o81xq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14560747, 1, -0.6242485)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=1771366963]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D" unique_id=1840364011]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.363037, 0.5, 3.557129)
+size = Vector3(11.726074, 1, 8.114258)
